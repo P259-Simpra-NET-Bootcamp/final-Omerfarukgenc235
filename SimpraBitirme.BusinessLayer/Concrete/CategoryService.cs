@@ -19,7 +19,6 @@ namespace SimpraBitirme.BusinessLayer.Concrete
         }
         public virtual ApiResponse Add(CategoryRequest category)
         {
-
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.Success = false;
             try
