@@ -44,17 +44,25 @@ namespace SimpraBitirme.BusinessLayer.Concrete
 
         public ApiResponse Add(CategoryProductRequest categoryProduct)
         {
+            ApiResponse apiResponse = new ApiResponse();
+            apiResponse.Success = false;
             try
             {
                 var mapped = _mapper.Map<CategoryProduct>(categoryProduct);
                 var response = _categoryProductDal.Insert(mapped);
                 if (response > 0)
-                    return new ApiResponse("İşlem başarılı bir şekilde gerçekleştirilmiştir");
-                return new ApiResponse("İşlem sırasında bir hata meydana gelmiştir!");
+                {
+                    apiResponse.Message = "İşlem başarılı bir şekilde gerçekleştirilmiştir";
+                    apiResponse.Success = true;
+                    return apiResponse;
+                }
+                apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir!";
+                return apiResponse;
             }
             catch
             {
-                return new ApiResponse("İşlem sırasında bir hata meydana gelmiştir.");
+                apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir!";
+                return apiResponse;
             }
         }
 
