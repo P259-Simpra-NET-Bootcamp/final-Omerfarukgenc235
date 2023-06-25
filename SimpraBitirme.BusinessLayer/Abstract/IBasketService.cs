@@ -18,6 +18,5 @@ namespace SimpraBitirme.BusinessLayer.Abstract
         BasketResponse GetByID(int id);
         ApiResponse UseCouponCode(string couponCode);
         ApiResponse RemoveCouponCode();
-        bool Delete(int id);
     }
 }

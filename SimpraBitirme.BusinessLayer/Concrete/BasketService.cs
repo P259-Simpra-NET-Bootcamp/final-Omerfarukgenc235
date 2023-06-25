@@ -32,10 +32,7 @@ namespace SimpraBitirme.BusinessLayer.Concrete
             return new ApiResponse("İşlem gerçekleştirilirken bir hata meydana gelmiştir.");
         }
 
-        public bool Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
+  
 
         public BasketResponse GetByID(int id)
         {
