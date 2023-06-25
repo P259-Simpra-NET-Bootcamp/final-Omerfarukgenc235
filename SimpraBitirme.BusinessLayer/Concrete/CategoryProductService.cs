@@ -44,5 +44,11 @@ namespace SimpraBitirme.BusinessLayer.Concrete
             return new ApiResponse("İşlem sırasında bir hata meydana gelmiştir!");
 
         }
+
+        public List<CategoryProductResponse> GetListByCategoryId(int categoryId)
+        {
+            var deger = _categoryProductDal.GetAllByCategoryId(categoryId);
+            return deger;
+        }
     }
 }

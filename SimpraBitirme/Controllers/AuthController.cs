@@ -27,7 +27,6 @@ namespace SimpraBitirme.Controllers
             _userService = userService;
             _configuration = configuration;
         }
-        [Authorize]
         [HttpPost("Admin")]
         public string AdminRegister([FromBody] UserRequest userPostRequest)
         {

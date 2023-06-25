@@ -38,5 +38,12 @@ namespace SimpraBitirme.Controllers
             var deger = _categoryProductService.Add(categoryProductRequest);
             return Ok(deger);
         }
+        [HttpGet("categoryFilter/{catgoryId}")]
+        public IActionResult GetByFilterCategoryId(int catgoryId)
+        {
+            var deger = _categoryProductService.GetListByCategoryId(catgoryId);
+            return Ok(deger);
+        }
+
     }
 }

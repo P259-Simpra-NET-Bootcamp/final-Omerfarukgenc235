@@ -7,6 +7,6 @@ namespace SimpraBitirme.DataAccessLayer.Abstract
     {
         List<CategoryProductResponse> GetAll();
         CategoryProductResponse GetById(int id);
-
+        List<CategoryProductResponse> GetAllByCategoryId(int categoryId);
     }
 }

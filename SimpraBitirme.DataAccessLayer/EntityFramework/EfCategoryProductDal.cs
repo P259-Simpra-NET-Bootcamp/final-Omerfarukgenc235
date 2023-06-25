@@ -35,6 +35,28 @@ namespace SimpraBitirme.DataAccessLayer.EntityFramework
                         }).ToList();
             }
         }
+
+
+        public List<CategoryProductResponse> GetAllByCategoryId(int categoryId)
+        {
+            using (var context = new Context(_options))
+            {
+                return (from cs in context.CategoryProducts
+                        join category in context.Categories on cs.CategoryId equals category.Id
+                        join product in context.Products on cs.ProductId equals product.Id
+                        where cs.CategoryId == categoryId
+                        orderby cs.Id ascending
+                        select new CategoryProductResponse
+                        {
+                            Id = cs.Id,
+                            Product = product,
+                            ProductId = cs.ProductId,
+                            Category = category,
+                            CategoryId = cs.CategoryId,
+                        }).ToList();
+            }
+        }
+
         public CategoryProductResponse GetById(int id)
         {
             using (var context = new Context(_options))

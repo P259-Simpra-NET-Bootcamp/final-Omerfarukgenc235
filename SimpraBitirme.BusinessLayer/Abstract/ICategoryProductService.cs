@@ -12,6 +12,7 @@ namespace SimpraBitirme.BusinessLayer.Abstract
     public interface ICategoryProductService
     {
         List<CategoryProductResponse> GetList();
+        List<CategoryProductResponse> GetListByCategoryId(int categoryId);
         CategoryProductResponse GetByID(int id);
         ApiResponse Add(CategoryProductRequest categoryProduct);
         bool Delete(int id);

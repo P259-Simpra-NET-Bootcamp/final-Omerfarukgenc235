@@ -20,13 +20,18 @@ namespace SimpraBitirme.BusinessLayer.Concrete
 
         public ApiResponse Add(ProductRequest product)
         {
+            ApiResponse apiResponse = new ApiResponse();
+            apiResponse.Success = false;
             var mapped = _mapper.Map<Product>(product);
             var response = _productDal.Insert(mapped);
             if(response > 0)
             {
-                return new ApiResponse("İşlem başarılı bir şekilde gerçekleştirilmiştir.");
+                apiResponse.Message = "İşlem başarılı bir şekilde gerçekleştirilmiştir.";
+                apiResponse.Success = true;
+                return apiResponse;
             }
-            return new ApiResponse("İşlem gerçekleşirken bir hata meydana gelmiştir!");
+            apiResponse.Message = "İşlem gerçekleşirken bir hata meydana gelmiştir!";
+            return apiResponse;
         }
 
         public bool Delete(int id)
