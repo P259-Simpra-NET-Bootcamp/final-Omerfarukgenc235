@@ -40,48 +40,57 @@ namespace SimpraBitirme.BusinessLayer.Concrete
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.Success = false;
 
-            if (userRequest == null)
+            try
             {
-                apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
-                return apiResponse;
-            }
-
-            var anyUser = _userDal.Find(x => x.Email == userRequest.Email);
-
-            if(anyUser != null)
-            {
-                apiResponse.Message = "Böyle bir kullanıcı zaten mevcut";
-                return apiResponse;
-            }
-
-            userRequest.Password = HashPassword(userRequest.Password);
-            var user = _mapper.Map<User>(userRequest);
-            user.PointBalance = 0;
-            using (var transaction = new TransactionScope())
-            {
-                try
+          
+                if (userRequest == null)
                 {
-                    var response = _userDal.InsertIdResponse(user);
-                    if (response < 1)
-                    {
-                        apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
-                        return apiResponse;
-                    }
-                    Basket basket = new Basket();
-                    basket.UserId = response;
-                    var basketResponse = _basketDal.Insert(basket);
-                    if (basketResponse > 0)
-                    {
-                        apiResponse.Message = "Kullanıcı başarılı bir şekilde eklenmiştir.";
-                        apiResponse.Success = true;
-                        transaction.Complete();
-                        return apiResponse;
-                    }
+                    apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
+                    return apiResponse;
                 }
-                catch
+
+                var anyUser = _userDal.Find(x => x.Email == userRequest.Email);
+
+                if (anyUser != null)
                 {
-                    transaction.Dispose();            
+                    apiResponse.Message = "Böyle bir kullanıcı zaten mevcut";
+                    return apiResponse;
                 }
+
+                userRequest.Password = HashPassword(userRequest.Password);
+                var user = _mapper.Map<User>(userRequest);
+                user.PointBalance = 0;
+                using (var transaction = new TransactionScope())
+                {
+                    try
+                    {
+                        var response = _userDal.InsertIdResponse(user);
+                        if (response < 1)
+                        {
+                            apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
+                            return apiResponse;
+                        }
+                        Basket basket = new Basket();
+                        basket.UserId = response;
+                        var basketResponse = _basketDal.Insert(basket);
+                        if (basketResponse > 0)
+                        {
+                            apiResponse.Message = "Kullanıcı başarılı bir şekilde eklenmiştir.";
+                            apiResponse.Success = true;
+                            transaction.Complete();
+                            return apiResponse;
+                        }
+                    }
+                    catch
+                    {
+                        transaction.Dispose();
+                    }
+                    apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
+                    return apiResponse;
+                }
+            }
+            catch
+            {
                 apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
                 return apiResponse;
             }
