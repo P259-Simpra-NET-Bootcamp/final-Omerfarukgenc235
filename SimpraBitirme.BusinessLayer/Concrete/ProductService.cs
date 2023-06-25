@@ -36,7 +36,12 @@ namespace SimpraBitirme.BusinessLayer.Concrete
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            var response = _productDal.Find(x => x.Id == id);
+            response.IsDelete = true;
+            var deleteResponse = _productDal.Delete(response);
+            if (deleteResponse > 0)
+                return true;
+            return false;
         }
 
         public ProductResponse GetByID(int id)
