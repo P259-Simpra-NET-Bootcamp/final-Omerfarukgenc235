@@ -43,7 +43,9 @@ namespace SimpraBitirme.BusinessLayer.Concrete
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.Success = false;
             try
-            {            
+            {
+               
+
                 bankCardRequest.CardNumber = HashCardNumber(bankCardRequest.CardNumber);
 
 
@@ -81,9 +83,9 @@ namespace SimpraBitirme.BusinessLayer.Concrete
             catch
             {
                 apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
-                apiResponse.Success = false;
                 return apiResponse;
             }
+        }
 
         public ApiResponse AddBalance(BankCardBalanceRequest bankCardBalanceRequest)
         {
