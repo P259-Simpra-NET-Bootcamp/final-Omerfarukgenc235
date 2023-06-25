@@ -77,7 +77,14 @@ namespace SimpraBitirme.BusinessLayer.Concrete
         {
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.Success = false;
+            var userId = _httpContextAccessorService.GetUserId();
             var getById = _basketItemDal.Find(x => x.Id == id);
+            if(getById.CreatedBy != userId)
+            {
+                apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
+                return apiResponse;
+            }
+
             var response = _basketItemDal.Delete(getById);
             if (response > 0)
             {
