@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpraBitirme.BusinessLayer.Abstract;
@@ -22,27 +23,27 @@ namespace SimpraBitirme.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var deger = _categoryProductService.GetList();
-            return Ok(deger);
+            var response = _categoryProductService.GetList();
+            return Ok(response);
         }
         [HttpGet("Id")]
         public IActionResult GetById(int Id)
         {
-            var deger = _categoryProductService.GetByID(Id);
-            return Ok(deger);
+            var response = _categoryProductService.GetByID(Id);
+            return Ok(response);
         }
         [Authorize(Roles = "A")]
         [HttpPost]
         public IActionResult Post([FromBody] CategoryProductRequest categoryProductRequest)
         {
-            var deger = _categoryProductService.Add(categoryProductRequest);
-            return Ok(deger);
+            var response = _categoryProductService.Add(categoryProductRequest);
+            return Ok(response);
         }
         [HttpGet("categoryFilter/{catgoryId}")]
         public IActionResult GetByFilterCategoryId(int catgoryId)
         {
-            var deger = _categoryProductService.GetListByCategoryId(catgoryId);
-            return Ok(deger);
+            var response = _categoryProductService.GetListByCategoryId(catgoryId);
+            return Ok(response);
         }
 
     }

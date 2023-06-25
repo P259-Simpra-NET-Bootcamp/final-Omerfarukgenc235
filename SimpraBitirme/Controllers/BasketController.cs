@@ -21,21 +21,29 @@ namespace SimpraBitirme.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var deger = _basketService.GetList();
-            return Ok(deger);
+            var response = _basketService.GetList();
+            return Ok(response);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var deger = _basketService.GetByID(id);
-            return Ok(deger);
+            var response = _basketService.GetByID(id);
+            return Ok(response);
         }
         [HttpGet("GetByUser/{userId}")]
         public IActionResult GetByUserId(int userId)
         {
-            var deger = _basketService.GetByUserId(userId);
-            return Ok(deger);
+            var response = _basketService.GetByUserId(userId);
+            return Ok(response);
         }
+
+        [HttpGet("GetMyBasket")]
+        public IActionResult GetMyBasket()
+        {
+            var response = _basketService.GetByAuthenticationUserBasket();
+            return Ok(response);
+        }
+
         [HttpPut("RemoveCouponCode")]
         public IActionResult RemoveCouponCode()
         {
@@ -49,5 +57,8 @@ namespace SimpraBitirme.Controllers
             var response = _basketService.UseCouponCode(couponCode);
             return Ok(response);
         }
+
+
+
     }
 }

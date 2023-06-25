@@ -23,20 +23,20 @@ namespace SimpraBitirme.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var deger = _orderService.GetList();
-            return Ok(deger);
+            var response = _orderService.GetList();
+            return Ok(response);
         }
         [HttpGet("report/GetByUserId")]
         public IActionResult GetByUserId()
         {
-            var deger = _orderService.GetListByUserId();
-            return Ok(deger);
+            var response = _orderService.GetListByUserId();
+            return Ok(response);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var deger = _orderService.GetByID(id);
-            return Ok(deger);
+            var response = _orderService.GetByID(id);
+            return Ok(response);
         }
         [HttpPost]
         public ApiResponse Post([FromBody] OrderRequest orderRequest)

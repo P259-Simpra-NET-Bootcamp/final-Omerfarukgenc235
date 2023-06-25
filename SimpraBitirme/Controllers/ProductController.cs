@@ -23,14 +23,14 @@ namespace SimpraBitirme.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var deger = _productService.GetList();
-            return Ok(deger);
+            var response = _productService.GetList();
+            return Ok(response);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var deger = _productService.GetByID(id);
-            return Ok(deger);
+            var response = _productService.GetByID(id);
+            return Ok(response);
         }
         [Authorize(Roles = "A")]
         [HttpPost]

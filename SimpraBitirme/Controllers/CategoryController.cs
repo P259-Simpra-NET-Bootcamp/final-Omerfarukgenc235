@@ -20,14 +20,14 @@ namespace SimpraOdev2.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var deger = _categoryService.GetList();
-            return Ok(deger);
+            var response = _categoryService.GetList();
+            return Ok(response);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var deger = _categoryService.GetByID(id);
-            return Ok(deger);
+            var response = _categoryService.GetByID(id);
+            return Ok(response);
         }
         [Authorize(Roles = "A")]
         [HttpPost]

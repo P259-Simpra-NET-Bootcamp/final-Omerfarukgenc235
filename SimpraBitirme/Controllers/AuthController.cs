@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SimpraBitirme.Constant;
 using Microsoft.AspNetCore.Authorization;
+using Azure;
 
 namespace SimpraBitirme.Controllers
 {
@@ -27,41 +28,40 @@ namespace SimpraBitirme.Controllers
             _userService = userService;
             _configuration = configuration;
         }
-        [Authorize(Roles = "A")]
         [HttpPost("Admin")]
         public string AdminRegister([FromBody] UserRequest userPostRequest)
         {
             userPostRequest.Role = ApplicationConstants.AdminRole;
-            var deger = _userService.Add(userPostRequest);
-            if (deger.Success)
+            var response = _userService.Add(userPostRequest);
+            if (response.Success)
             {
                 return "başarılı";
             }
-            return deger.Message;
+            return response.Message;
         }
         [HttpPost("User")]
         public string UserRegister([FromBody] UserRequest userPostRequest)
         {
             userPostRequest.Role = ApplicationConstants.UserRole;
-            var deger = _userService.Add(userPostRequest);
-            if (deger.Success)
+            var response = _userService.Add(userPostRequest);
+            if (response.Success)
             {
                 return "başarılı";
             }
-            return deger.Message;
+            return response.Message;
         }
         [HttpPost("Login")]
         public string Login([FromBody] AuthenticateRequest request)
         {
-            var deger = _userService.Login(request);
-            if (deger.Success)
+            var response = _userService.Login(request);
+            if (response.Success)
             {
-                var kullanici = _userService.GetUserTokenByID(deger.Response.Id);
+                var kullanici = _userService.GetUserTokenByID(response.Response.Id);
                 string token = CreateToken(kullanici);
                 return token;
             }
             else
-             return deger.Message;
+             return response.Message;
         }
         [Authorize(Roles = "A")]
 
@@ -76,8 +76,8 @@ namespace SimpraBitirme.Controllers
         [HttpGet("Id")]
         public UserResponse GetByUserId(int Id)
         {
-            var deger = _userService.GetByID(Id);
-            return deger;
+            var response = _userService.GetByID(Id);
+            return response;
         }
         private string CreateToken(UserToken user)
         {

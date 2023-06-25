@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpraBitirme.BusinessLayer.Abstract;
 using SimpraBitirme.EntityLayer.Dto.Coupons;
@@ -20,21 +21,21 @@ namespace SimpraBitirme.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var deger = _couponService.GetList();
-            return Ok(deger);
+            var response = _couponService.GetList();
+            return Ok(response);
         }
         [HttpGet("GetById")]
         public IActionResult GetById(int id)
         {
-            var deger = _couponService.GetByID(id);
-            return Ok(deger);
+            var response = _couponService.GetByID(id);
+            return Ok(response);
         }
         [Authorize(Roles = "A")]
         [HttpPost]
         public IActionResult Post([FromBody] CouponRequest couponRequest)
         {
-            var deger = _couponService.Add(couponRequest);
-            return Ok(deger);
+            var response = _couponService.Add(couponRequest);
+            return Ok(response);
         }
 
     }
