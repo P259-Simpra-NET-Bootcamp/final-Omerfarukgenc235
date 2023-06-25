@@ -154,7 +154,7 @@ namespace SimpraBitirme.BusinessLayer.Concrete
         {
             var response = _userDal.Find(x => x.Id == id);
             response.IsDelete = true;
-            var deleteResponse = _userDal.Delete(response);
+            var deleteResponse = _userDal.Update(response);
             if(deleteResponse > 0)
             {
                 return true;

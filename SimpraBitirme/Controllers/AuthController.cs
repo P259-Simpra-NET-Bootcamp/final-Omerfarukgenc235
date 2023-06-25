@@ -27,6 +27,7 @@ namespace SimpraBitirme.Controllers
             _userService = userService;
             _configuration = configuration;
         }
+        [Authorize(Roles = "A")]
         [HttpPost("Admin")]
         public string AdminRegister([FromBody] UserRequest userPostRequest)
         {
@@ -62,6 +63,15 @@ namespace SimpraBitirme.Controllers
             else
              return deger.Message;
         }
+        [Authorize(Roles = "A")]
+
+        [HttpDelete("id")]
+        public bool DeleteUser(int id)
+        {
+            var response = _userService.Delete(id);
+            return response;
+        }
+
         [Authorize]
         [HttpGet("Id")]
         public UserResponse GetByUserId(int Id)
