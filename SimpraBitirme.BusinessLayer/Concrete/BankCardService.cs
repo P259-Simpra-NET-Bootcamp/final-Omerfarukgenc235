@@ -45,6 +45,20 @@ namespace SimpraBitirme.BusinessLayer.Concrete
 
             bankCardRequest.CardNumber = HashCardNumber(bankCardRequest.CardNumber);
 
+
+            if(bankCardRequest.CVV.Length != 3)
+            {
+                apiResponse.Message = "CVV 3 haneden oluşmak zorundadır.";
+                return apiResponse;
+            }
+
+            if (bankCardRequest.CVV.Length != 16)
+            {
+                apiResponse.Message = "Banka kartı 16 haneden oluşmak zorundadır.";
+                return apiResponse;
+            }
+
+
             bool checkBankCard = _bankCardDal.Any(x => x.CardNumber == bankCardRequest.CardNumber);
             if (checkBankCard)
             {

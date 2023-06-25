@@ -57,8 +57,5 @@ namespace SimpraBitirme.Controllers
             var response = _basketService.UseCouponCode(couponCode);
             return Ok(response);
         }
-
-
-
     }
 }
