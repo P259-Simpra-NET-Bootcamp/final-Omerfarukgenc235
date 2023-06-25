@@ -22,16 +22,25 @@ namespace SimpraBitirme.BusinessLayer.Concrete
         {
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.Success = false;
-            var mapped = _mapper.Map<Product>(product);
-            var response = _productDal.Insert(mapped);
-            if(response > 0)
+            try
             {
-                apiResponse.Message = "İşlem başarılı bir şekilde gerçekleştirilmiştir.";
-                apiResponse.Success = true;
+               
+                var mapped = _mapper.Map<Product>(product);
+                var response = _productDal.Insert(mapped);
+                if (response > 0)
+                {
+                    apiResponse.Message = "İşlem başarılı bir şekilde gerçekleştirilmiştir.";
+                    apiResponse.Success = true;
+                    return apiResponse;
+                }
+                apiResponse.Message = "İşlem gerçekleşirken bir hata meydana gelmiştir!";
                 return apiResponse;
             }
-            apiResponse.Message = "İşlem gerçekleşirken bir hata meydana gelmiştir!";
-            return apiResponse;
+            catch
+            {
+                apiResponse.Message = "İşlem gerçekleşirken bir hata meydana gelmiştir!";
+                return apiResponse;
+            }
         }
 
         public bool Delete(int id)
@@ -62,31 +71,40 @@ namespace SimpraBitirme.BusinessLayer.Concrete
         {
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.Success = false;
-            var response = _productDal.Find(x => x.Id == product.Id);
-            if(response != null)
-            {       
-                response.Description = product.Description;
-                response.Name = product.Name;
-                response.Property = product.Property;
-                response.Url = product.Url;
-                response.Tag = product.Tag;
-                response.Activity = product.Activity;
-                response.Quantity = product.Quantity;
-                response.Price = product.Price;
-                response.PointEarningPercentage = product.PointEarningPercentage;
-                response.MaxPoint = product.MaxPoint;
-                var update = _productDal.Update(response);
-                if (update > 0)
+            try
+            {
+               
+                var response = _productDal.Find(x => x.Id == product.Id);
+                if (response != null)
                 {
-                    apiResponse.Success = true;
-                    apiResponse.Message = "İşlem başarılı bir şekilde gerçekleştirilmiştir.";
+                    response.Description = product.Description;
+                    response.Name = product.Name;
+                    response.Property = product.Property;
+                    response.Url = product.Url;
+                    response.Tag = product.Tag;
+                    response.Activity = product.Activity;
+                    response.Quantity = product.Quantity;
+                    response.Price = product.Price;
+                    response.PointEarningPercentage = product.PointEarningPercentage;
+                    response.MaxPoint = product.MaxPoint;
+                    var update = _productDal.Update(response);
+                    if (update > 0)
+                    {
+                        apiResponse.Success = true;
+                        apiResponse.Message = "İşlem başarılı bir şekilde gerçekleştirilmiştir.";
+                        return apiResponse;
+                    }
+                    apiResponse.Message = "İşlem gerçekleşirken bir hata meydana gelmiştir!";
                     return apiResponse;
                 }
+                apiResponse.Message = "Lütfen geçerli bir ürün seçiniz!";
+                return apiResponse;
+            }
+            catch
+            {
                 apiResponse.Message = "İşlem gerçekleşirken bir hata meydana gelmiştir!";
                 return apiResponse;
             }
-            apiResponse.Message = "Lütfen geçerli bir ürün seçiniz!";
-            return apiResponse;
         }
         public List<ProductResponse> GetFilterByName(string name)
         {

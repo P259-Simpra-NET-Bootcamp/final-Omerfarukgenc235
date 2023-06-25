@@ -42,41 +42,48 @@ namespace SimpraBitirme.BusinessLayer.Concrete
         {
             ApiResponse apiResponse = new ApiResponse();
             apiResponse.Success = false;
+            try
+            {            
+                bankCardRequest.CardNumber = HashCardNumber(bankCardRequest.CardNumber);
 
-            bankCardRequest.CardNumber = HashCardNumber(bankCardRequest.CardNumber);
+
+                if (bankCardRequest.CVV.Length != 3)
+                {
+                    apiResponse.Message = "CVV 3 haneden oluşmak zorundadır.";
+                    return apiResponse;
+                }
+
+                if (bankCardRequest.CVV.Length != 16)
+                {
+                    apiResponse.Message = "Banka kartı 16 haneden oluşmak zorundadır.";
+                    return apiResponse;
+                }
 
 
-            if(bankCardRequest.CVV.Length != 3)
-            {
-                apiResponse.Message = "CVV 3 haneden oluşmak zorundadır.";
+                bool checkBankCard = _bankCardDal.Any(x => x.CardNumber == bankCardRequest.CardNumber);
+                if (checkBankCard)
+                {
+                    apiResponse.Message = "Böyle bir banka kartı zaten mevcut.";
+                    return apiResponse;
+                }
+                var mapped = _mapper.Map<BankCard>(bankCardRequest);
+                mapped.CreatedBy = _httpContextAccessorService.GetUserId();
+                var response = _bankCardDal.Insert(mapped);
+                if (response > 0)
+                {
+                    apiResponse.Success = true;
+                    apiResponse.Message = "Kart başarılı bir şekilde eklenmiştir.";
+                    return apiResponse;
+                }
+                apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
                 return apiResponse;
             }
-
-            if (bankCardRequest.CVV.Length != 16)
+            catch
             {
-                apiResponse.Message = "Banka kartı 16 haneden oluşmak zorundadır.";
+                apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
+                apiResponse.Success = false;
                 return apiResponse;
             }
-
-
-            bool checkBankCard = _bankCardDal.Any(x => x.CardNumber == bankCardRequest.CardNumber);
-            if (checkBankCard)
-            {
-                apiResponse.Message = "Böyle bir banka kartı zaten mevcut.";
-                return apiResponse;
-            }
-            var mapped = _mapper.Map<BankCard>(bankCardRequest);
-            mapped.CreatedBy = _httpContextAccessorService.GetUserId();
-            var response = _bankCardDal.Insert(mapped);
-            if (response > 0)
-            {
-                apiResponse.Success = true;
-                apiResponse.Message = "Kart başarılı bir şekilde eklenmiştir.";
-                return apiResponse;
-            }
-            apiResponse.Message = "İşlem sırasında bir hata meydana gelmiştir.";
-            return apiResponse;
-        }
 
         public ApiResponse AddBalance(BankCardBalanceRequest bankCardBalanceRequest)
         {
