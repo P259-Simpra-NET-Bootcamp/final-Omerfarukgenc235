@@ -12,8 +12,8 @@ using SimpraBitirme.DataAccessLayer.Concrete;
 namespace SimpraBitirme.DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230624102219_mig_sdagsdgsd")]
-    partial class mig_sdagsdgsd
+    [Migration("20230625201245_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,52 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("SimpraBitirme.EntityLayer.Concrete.BankCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CVV")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("CardName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Expiration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardNumber")
+                        .IsUnique();
+
+                    b.ToTable("BankCard", (string)null);
+                });
 
             modelBuilder.Entity("SimpraBitirme.EntityLayer.Concrete.Basket", b =>
                 {
@@ -47,9 +93,6 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
-
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("float");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -82,6 +125,9 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -217,6 +263,9 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                     b.Property<string>("CouponCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double?>("CouponPrice")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -226,6 +275,13 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double?>("PointPrice")
+                        .HasColumnType("float");
+
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
@@ -233,6 +289,9 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -260,6 +319,16 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ProductPrice")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductQuantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -313,6 +382,9 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<string>("Tag")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -362,8 +434,8 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<decimal>("PointBalance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("PointBalance")
+                        .HasColumnType("float");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -457,20 +529,18 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
             modelBuilder.Entity("SimpraBitirme.EntityLayer.Concrete.OrderItem", b =>
                 {
                     b.HasOne("SimpraBitirme.EntityLayer.Concrete.Order", "Order")
-                        .WithMany("OrderItems")
+                        .WithMany("OrderItem")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SimpraBitirme.EntityLayer.Concrete.Product", "Product")
+                    b.HasOne("SimpraBitirme.EntityLayer.Concrete.Product", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("SimpraBitirme.EntityLayer.Concrete.Basket", b =>
@@ -485,7 +555,7 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
 
             modelBuilder.Entity("SimpraBitirme.EntityLayer.Concrete.Order", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("OrderItem");
                 });
 
             modelBuilder.Entity("SimpraBitirme.EntityLayer.Concrete.Product", b =>

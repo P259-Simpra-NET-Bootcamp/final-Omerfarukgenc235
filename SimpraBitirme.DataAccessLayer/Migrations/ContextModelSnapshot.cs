@@ -274,7 +274,7 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
 
                     b.Property<string>("OrderNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double?>("PointPrice")
                         .HasColumnType("float");
@@ -286,6 +286,9 @@ namespace SimpraBitirme.DataAccessLayer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
