@@ -48,6 +48,14 @@ namespace SimpraBitirme.BusinessLayer.Concrete
             apiResponse.Success = false;
             try
             {
+                var check = _categoryProductDal.Any(x => x.ProductId == categoryProduct.ProductId && x.CategoryId == categoryProduct.CategoryId);
+
+                if(check)
+                {
+                    apiResponse.Message = "Kategori zaten ekli.";
+                    return apiResponse;
+                }
+
                 var mapped = _mapper.Map<CategoryProduct>(categoryProduct);
                 var response = _categoryProductDal.Insert(mapped);
                 if (response > 0)
