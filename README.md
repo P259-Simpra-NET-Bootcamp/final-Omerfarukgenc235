@@ -3,4 +3,4 @@ Bu projenin api dökümantasyonu aşağıdaki linktedir.
 https://documenter.getpostman.com/view/19458505/2s93z6ejPW
 
 
-swagger'da authorize olmak için Authorize butonuna tıklayarak  " Bearer "token"   " şeklinde yazılması gerekmektedir.
+swagger'da authorize olmak için Authorize butonuna tıklayarak  Bearer "token"    şeklinde yazılması gerekmektedir.
